@@ -2,11 +2,13 @@ package server;
 
 import java.math.BigDecimal;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
-public class BankAccountImpl implements BankAccount {
+public class BankAccountImpl extends UnicastRemoteObject implements BankAccount  {
     private BigDecimal balance;
 
-    public BankAccountImpl(BigDecimal initialBalance) {
+    public BankAccountImpl(BigDecimal initialBalance) throws RemoteException {
+        super(1099);
         this.balance = initialBalance;
     }
     @Override
@@ -15,8 +17,9 @@ public class BankAccountImpl implements BankAccount {
     }
 
     @Override
-    public void deposit(BigDecimal amount) throws RemoteException {
-        this.balance.add(amount);
+    public BigDecimal deposit(BigDecimal amount) throws RemoteException {
+        this.balance = this.balance.add(amount);
+        return this.balance;
     }
 
     @Override
